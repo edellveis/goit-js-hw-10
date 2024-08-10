@@ -66,3 +66,10 @@ font-style: normal;
 font-weight: 400;
 line-height: 24px;
 }
+/* Snackbar */
+.form{
+  display: inline-flex;
+flex-direction: column;
+align-items: flex-start;
+gap: 8px;
+}
