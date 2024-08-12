@@ -39,24 +39,33 @@ const mins = document.querySelector('span[data-minutes]');
 const sec = document.querySelector('span[data-seconds]');
 
 
-
+start.disabled = true;
 start.addEventListener('click', startTimer);
 
 
 function startTimer () {
+  input.disabled = true;
+  start.disabled = true;
 const userSelectedDateUnix = userSelectedDate.getTime();
 const timer = setInterval(() => { 
  
   const currentDataUnix = new Date().getTime()
-
-  
     const timeLeft = userSelectedDateUnix - currentDataUnix;
-
-
-  days.textContent = addLeadingZero(convertMs(timeLeft).days);
-  hour.textContent = addLeadingZero(convertMs(timeLeft).hours);
-  mins.textContent = addLeadingZero(convertMs(timeLeft).minutes);
-  sec.textContent = addLeadingZero(convertMs(timeLeft).seconds);  
+    const timeComponents = convertMs(timeLeft);
+        days.textContent = addLeadingZero(timeComponents.days);
+        hour.textContent = addLeadingZero(timeComponents.hours);
+        mins.textContent = addLeadingZero(timeComponents.minutes);
+        sec.textContent = addLeadingZero(timeComponents.seconds);
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          input.disabled = false;
+          start.disabled = false;
+          clearInterval(timer);
+          days.textContent = '00';
+          hour.textContent = '00';
+          mins.textContent = '00';
+          sec.textContent = '00';
+      }
 }, 1000);
 
 }

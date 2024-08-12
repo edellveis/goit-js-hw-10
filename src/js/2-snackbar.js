@@ -1,42 +1,41 @@
-// Описаний у документації
 import iziToast from "izitoast";
-// Додатковий імпорт стилів
 import "izitoast/dist/css/iziToast.min.css";
 
+const form = document.querySelector('.form');
+const input = form.querySelector('input[name="delay"]');
+const fulfilledCheck = form.querySelector('input[value="fulfilled"]');
 
-const input = document.querySelector('.input')
-const fulfilledCheck = document.querySelector('input[value="fulfilled"]')
-const rejectedCheckS = document.querySelector('input[value="rejected"]')
-const createBtn = document.querySelector('.Create-btn')
-
-
-
-createBtn.addEventListener('click', (event) => {
+form.addEventListener('submit', (event) => {
     event.preventDefault();
-    const inputTimeMs = Number(input.value);
-    const promis = new Promise ((resolev, reject)=>{
+    const delay = Number(event.target.delay.value);
+    const promise = new Promise((resolve, reject) => {
         setTimeout(() => {
             if (fulfilledCheck.checked) {
-                resolev(inputTimeMs)
+                resolve(delay);
             } else {
-                reject(inputTimeMs)
-            } 
-        } ,inputTimeMs)
+                reject(delay);
+            }
+        }, delay);
     });
-    promis.then(inputTimeMs => {
-        iziToast.show({
-            title: `Fulfilled promise in ${inputTimeMs}ms`,
-            color: 'green',
-            position: 'topRight',
-            progressBar: false,})
-    
-    }).catch(inputTimeMs=>{
-       iziToast.show({
-        title: `Rejected promise in ${inputTimeMs}ms`,
-        color: 'red',
-        position: 'topRight',
-        progressBar: false,
-       })
-    }) 
-    input.value = '';
+
+    promise
+        .then(delay => {
+            iziToast.show({
+                title: `Fulfilled promise in ${delay}ms`,
+                color: 'green',
+                position: 'topRight',
+                progressBar: false,
+            });
+        })
+        .catch(delay => {
+            iziToast.show({
+                title: `Rejected promise in ${delay}ms`,
+                color: 'red',
+                position: 'topRight',
+                progressBar: false,
+            });
+        })
+        .finally(() => {
+            input.value = '';
+        });
 });
